@@ -1,0 +1,240 @@
+% !TeX encoding = UTF-8
+% !TeX spellcheck = de_DE
+% !TeX root = main.tex
+%
+% P.Muster, 02.04.2019 - 02.04.2020
+%   Paper-Work on ferroelectric materials
+%   for field effect pH sensors
+%
+% TU Freiberg, IESM, Gustav-Zeuner-Str. 03
+
+\documentclass[%
+fontsize        =   11pt,
+kapitel         =	true, 
+doktyp          =	studarbeit,
+tikz            =   true,
+parskip	        =	half,
+sprache         =   ngerman,
+nummern         =   abschnitt,
+betreuerform    =   liste,
+farbschema      =   cmyk,
+twoside, fleqn,
+]{TUBAFarbeiten}
+
+\overfullrule=1em
+\KOMAoptions{
+    listof          =   totoc,
+    cleardoublepage =   current,
+    numbers         =   withenddot
+}
+
+%---------------------------------------------------------------------
+
+% PDFLATEX Zeichenkodierung etc.
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amsfonts, amssymb}
+\usepackage{lmodern, slantsc}
+\usepackage[english,ngerman]{babel}
+
+% LUATEX Zeichenkodierung etc.
+%\usepackage{fontspec}
+%\usepackage{luacode}
+
+% Allgemein
+\usepackage{microtype}
+\usepackage{wasysym, textcomp, latexsym}
+\usepackage{nicefrac, listings}
+
+% ToDo Notizen
+\setlength{\marginparwidth}{2cm}
+\usepackage{todonotes}
+
+% Farben und Farb-Definitionen
+\usepackage{color}
+	\definecolor{darkgreen}{rgb}{0,0.6,0}
+	\definecolor{gray}{rgb}{0.5,0.5,0.5}
+	\definecolor{mauve}{rgb}{0.58,0,0.6}
+
+% Mathematik, Physik und Einheiten
+\usepackage{siunitx, physics}
+\sisetup{% SI-Unitx Einstellungen
+	detect-all,
+	per-mode=symbol,
+    fraction-function=\nicefrac,
+    sticky-per,
+	output-decimal-marker={.},
+	unit-mode=text,
+	separate-uncertainty,
+}
+
+% Ansprechende Tabellenumgebung & schönere Tabellentabs
+\usepackage{tabulary, booktabs, longtable}
+\usepackage{multirow, multicol, array}
+
+% Captions
+\usepackage[% Caption Settings
+	margin=5pt, 
+	font=footnotesize,
+	format=plain,
+	labelformat=simple,
+	labelsep=colon]{caption}
+\usepackage[% Subcaption Settings
+    margin=10pt,
+    format=hang,
+    font=scriptsize]{subcaption}
+
+\captionsetup[figure]{name=Abbildung}
+\captionsetup[table]{name=Tabelle}
+\captionsetup[subfigure]{
+    subrefformat=simple,
+    labelformat=simple
+}
+\renewcommand\thesubfigure{(\alph{subfigure})}
+
+% Footnotes
+\usepackage[flushmargin,bottom,multiple]{footmisc}
+
+% Graphikpakete u. a.
+\usepackage{graphicx}
+\usepackage[arrowmos]{circuitikz}
+\usepackage{pdflscape, pdfpages}
+
+% Chemiepaket(e)
+\usepackage[version=3, arrows=pgf]{mhchem}					
+
+% Verlinkungen und Querverweise - Reihenfolge wichtig!
+\usepackage[ngerman]{varioref}
+\usepackage{hyperref}
+\usepackage[ngerman, sort&compress]{cleveref}
+\usepackage[open, numbered]{bookmark}
+
+% Listen ohne parskip und mit Zusatzoptionen
+\usepackage{mdwlist, enumerate} 				
+
+% Biblatex, CSQUOTES nicht vergessen
+\usepackage[babel, german=quotes]{csquotes}
+\usepackage[% Biblatex Settings
+	backend      =	biber, 
+	style	     =	numeric-comp,
+	sorting	     =	none,
+	natbib    	 = 	true,
+	maxbibnames  =  20,
+	minbibnames  =  2,
+	ibidtracker  =  strict,
+	url		     =	true,
+	eprint	     =	false,
+]{biblatex}
+
+\addbibresource{Dateien/Literatur.bib}
+
+%% Allgemeine LaTeX Befehle und Neudefinitionen
+\renewcommand*{\bibfont}{\normalfont}
+
+\newcommand{\initPraeambel}{
+    % Römische Seitenzahlen in der Präambel
+    % Beginn mit Seite I (Titelseite)
+	\setcounter{page}{1}
+	\renewcommand{\thepage}{\Roman{page}}
+}
+
+\newcommand{\initHauptteil}{
+    % Römische Seitenzahlen in der Präambel
+    % Beginn mit Seite 1 (Einleitung)
+	\setcounter{page}{1}
+	\renewcommand{\thepage}{\arabic{page}}
+}
+
+\newcommand{\postappendix}{
+    % Literaturverzeichnis kommt nach dem Anhang
+    % Literaturverzeichnis ist aber kein Anhang
+    % -> \postappendix stellt die Appendixeinstellungen zurück 
+    %     und bindet leere Doppelseite ein
+    \bookmarksetup{startatroot}
+    \cleardoublepage
+}
+
+%% Dokumentanpassungen
+\makeatletter
+\AtBeginDocument{%
+    % Kommandos, Anpassungen
+    \initPraeambel
+    
+    \allowdisplaybreaks[2] % Seitenumbruch in langen Formeln erlauben
+    
+    % Referenz-Namen von Tabellen und Abbildungen im Singular und Plural
+    %   sowie an Satzanfängen (\Cref{}) und mitten im Satz (\cref{}).
+    \crefname{table}{Tab.}{Tab.}
+    \Crefname{table}{Tabelle}{Tabellen}
+    \crefname{figure}{Abb.}{Abb.}
+    \Crefname{figure}{Abbildung}{Abbildungen}
+    
+    % Eigene LaTeX-Befehle
+    %\newcommand{\name}[Anzahl Opt.]{Definition .. #1 #2 ..} % #i = Option bzw Angabe Nummer i
+    \newcommand{\zb}{z.\,B.\ }
+    \newcommand{\ua}{u.\,a.\ }
+    \newcommand{\dasheist}{d.\,h.\ }
+    \newcommand{\uvm}{u.\,v.\,m.\ }
+    
+    % Eigene LaTeX-Umgebungen
+    %\newenvironment{UMGEBUNGSNAME}[ANZAHL][OPTIONAL]{BEGIN}{END}
+    
+    % Silbentrennung von dem Babel-Paket unbekannten Wörtern
+    %   Bitte Manuell mit allen möglichen Silbentrennungen (-) angeben
+    \hyphenation{%
+        Grenz-fall
+    }
+}
+\makeatother
+
+% Einbindung der Titelbefehle
+\include{title}
+
+%---------------------------------------------------------------------
+\begin{document}
+
+\maketitle[intertext={im Rahmen des \\ Nanotechnologie-Forschungspraktikums}]
+
+%---------------------------------------------------------------------
+%% Präambel
+% Zusammenfassung
+\include{A_Abstract.tex}
+\cleardoublepage
+% Danksagung
+\include{B_Danksagung.tex}
+\cleardoublepage
+% Eidesstattliche Erklärung
+\include{C_Erklaerung.tex}
+\cleardoublepage
+%---------------------------------------------------------------------
+%% Verzeichnisse
+\tableofcontents
+\cleardoublepage
+%\listoffigures
+%\cleardoublepage
+%\listoftables
+%\cleardoublepage
+% Niemals das letzte \cleardoublepage vor Einleitungsbeginn vergessen!
+%---------------------------------------------------------------------
+
+%% Hier beginnt das eigentliche Dokument:
+%   Bei Umbenennung eines Abschnittes dies unbedingt hier mit berücksichtigen!
+
+\input{01_Einleitung}
+
+\input{02_Vorbetrachtungen}
+
+\input{03_Schichtherstellung}
+
+\input{04_Charakterisierung.tex}
+
+\input{05_Zusammenfassung}
+
+\appendix
+\input{Z_Anhang.tex}
+
+\postappendix
+\emergencystretch=1em
+\printbibliography[heading=bibintoc]
+
+\end{document}
