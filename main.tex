@@ -2,70 +2,81 @@
 % !TeX spellcheck = de_DE
 % !TeX root = main.tex
 %
-% P.Muster, 02.04.2019 - 02.04.2020
-%   Paper-Work on ferroelectric materials
-%   for field effect pH sensors
+%%%%% MIT LICENSE %%%%%
 %
+% Copyright (c) 2019 Pascal Muster
 % TU Freiberg, IESM, Gustav-Zeuner-Str. 03
+%
+% Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+%
+% The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+%
+% THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+%
+%%%%% END LICENSE %%%%%
 
+%% Beginn Präambel, Klassendefinition, Paketverwaltung
 \documentclass[%
-fontsize        =   11pt,
-kapitel         =	true, 
-doktyp          =	studarbeit,
-tikz            =   true,
-parskip	        =	half,
-sprache         =   ngerman,
-nummern         =   abschnitt,
-betreuerform    =   liste,
-farbschema      =   cmyk,
-twoside, fleqn,
+    doktyp       = darbeit,
+    fontsize     = 11pt,
+    kapitel      = true,
+    nummern      = abschnitt,
+    parskip	     = half,
+    tikz         = true,
+    sprache      = ngerman,
+    betreuerform = liste,
+    farbschema   = rgb,
+    twoside,
+    fleqn,
 ]{TUBAFarbeiten}
 
+% visualizing overfull rules
+% turn off if don't needed
 \overfullrule=1em
+
+% extra KOMA scrip options
 \KOMAoptions{
     listof          =   totoc,
     cleardoublepage =   current,
     numbers         =   withenddot
 }
 
-%---------------------------------------------------------------------
-
 % PDFLATEX Zeichenkodierung etc.
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
+\usepackage[final]{microtype}
 \usepackage{amsmath, amsfonts, amssymb}
+\usepackage{wasysym, textcomp, latexsym}
 \usepackage{lmodern, slantsc}
 \usepackage[english,ngerman]{babel}
+\usepackage{listings}
 
 % LUATEX Zeichenkodierung etc.
 %\usepackage{fontspec}
 %\usepackage{luacode}
 
-% Allgemein
-\usepackage{microtype}
-\usepackage{wasysym, textcomp, latexsym}
-\usepackage{nicefrac, listings}
+% Blindtext
+\usepackage{blindtext}
 
-% ToDo Notizen
+% ToDo - Notizen
 \setlength{\marginparwidth}{2cm}
 \usepackage{todonotes}
 
 % Farben und Farb-Definitionen
 \usepackage{color}
-	\definecolor{darkgreen}{rgb}{0,0.6,0}
-	\definecolor{gray}{rgb}{0.5,0.5,0.5}
-	\definecolor{mauve}{rgb}{0.58,0,0.6}
+    \definecolor{darkgreen}{rgb}{0,0.6,0}
+    \definecolor{gray}{rgb}{0.5,0.5,0.5}
+    \definecolor{mauve}{rgb}{0.58,0,0.6}
 
 % Mathematik, Physik und Einheiten
 \usepackage{siunitx, physics}
 \sisetup{% SI-Unitx Einstellungen
-	detect-all,
-	per-mode=symbol,
-    fraction-function=\nicefrac,
     sticky-per,
-	output-decimal-marker={.},
-	unit-mode=text,
-	separate-uncertainty,
+    detect-all,
+    per-mode=symbol,
+    unit-mode=text,
+    separate-uncertainty,
+    output-decimal-marker={.},
 }
 
 % Ansprechende Tabellenumgebung & schönere Tabellentabs
@@ -74,11 +85,12 @@ twoside, fleqn,
 
 % Captions
 \usepackage[% Caption Settings
-	margin=5pt, 
-	font=footnotesize,
-	format=plain,
-	labelformat=simple,
-	labelsep=colon]{caption}
+    margin=5pt,
+    font=footnotesize,
+    format=plain,
+    labelformat=simple,
+    labelsep=colon]{caption}
+
 \usepackage[% Subcaption Settings
     margin=10pt,
     format=hang,
@@ -86,22 +98,21 @@ twoside, fleqn,
 
 \captionsetup[figure]{name=Abbildung}
 \captionsetup[table]{name=Tabelle}
-\captionsetup[subfigure]{
-    subrefformat=simple,
-    labelformat=simple
-}
+\captionsetup[subfigure]{subrefformat=simple, labelformat=simple}
+\captionsetup[subtable]{subrefformat=simple, labelformat=simple}
+
 \renewcommand\thesubfigure{(\alph{subfigure})}
+\renewcommand\thesubtable{(\alph{subtable})}
 
-% Footnotes
-\usepackage[flushmargin,bottom,multiple]{footmisc}
+% Footnote handling
+\usepackage[flushmargin, bottom, multiple]{footmisc}
 
-% Graphikpakete u. a.
-\usepackage{graphicx}
-\usepackage[arrowmos]{circuitikz}
-\usepackage{pdflscape, pdfpages}
+% Graphikpakete
+\usepackage{graphicx, pdflscape, pdfpages}
+\usepackage[arrowmos, oldvoltagedirection]{circuitikz}
 
-% Chemiepaket(e)
-\usepackage[version=3, arrows=pgf]{mhchem}					
+% Chemiepaket
+\usepackage[version=3, arrows=pgf]{mhchem}
 
 % Verlinkungen und Querverweise - Reihenfolge wichtig!
 \usepackage[ngerman]{varioref}
@@ -110,77 +121,80 @@ twoside, fleqn,
 \usepackage[open, numbered]{bookmark}
 
 % Listen ohne parskip und mit Zusatzoptionen
-\usepackage{mdwlist, enumerate} 				
+\usepackage{mdwlist, enumerate}
 
 % Biblatex, CSQUOTES nicht vergessen
 \usepackage[babel, german=quotes]{csquotes}
 \usepackage[% Biblatex Settings
-	backend      =	biber, 
-	style	     =	numeric-comp,
-	sorting	     =	none,
-	natbib    	 = 	true,
-	maxbibnames  =  20,
-	minbibnames  =  2,
-	ibidtracker  =  strict,
-	url		     =	true,
-	eprint	     =	false,
+    backend=biber,
+    style=numeric-comp,
+    sorting=none,
+    natbib=true,
+    maxbibnames=20,
+    minbibnames=2,
+    ibidtracker=strict,
+    url=true,
+    eprint=false,
 ]{biblatex}
 
 \addbibresource{Dateien/Literatur.bib}
-
-%% Allgemeine LaTeX Befehle und Neudefinitionen
 \renewcommand*{\bibfont}{\normalfont}
 
+%--------------------
+%% Allgemeine LaTeX Befehle und Neudefinitionen
 \newcommand{\initPraeambel}{
     % Römische Seitenzahlen in der Präambel
     % Beginn mit Seite I (Titelseite)
-	\setcounter{page}{1}
-	\renewcommand{\thepage}{\Roman{page}}
+    \setcounter{page}{1}
+    \renewcommand{\thepage}{\Roman{page}}
 }
 
 \newcommand{\initHauptteil}{
-    % Römische Seitenzahlen in der Präambel
+    % Arabische Seitenzahlen im Hauptteil
     % Beginn mit Seite 1 (Einleitung)
-	\setcounter{page}{1}
-	\renewcommand{\thepage}{\arabic{page}}
+    \setcounter{page}{1}
+    \renewcommand{\thepage}{\arabic{page}}
 }
 
 \newcommand{\postappendix}{
     % Literaturverzeichnis kommt nach dem Anhang
     % Literaturverzeichnis ist aber kein Anhang
-    % -> \postappendix stellt die Appendixeinstellungen zurück 
-    %     und bindet leere Doppelseite ein
+    % Der Befehl \postappendix stellt die Appendixeinstellungen zurück
+    % und bindet leere Doppelseite ein, damit das Literaturverzeichnis
+    % eingefügt werden kann.
     \bookmarksetup{startatroot}
     \cleardoublepage
 }
 
+%--------------------
 %% Dokumentanpassungen
 \makeatletter
 \AtBeginDocument{%
     % Kommandos, Anpassungen
     \initPraeambel
-    
-    \allowdisplaybreaks[2] % Seitenumbruch in langen Formeln erlauben
-    
+
+    \allowdisplaybreaks[1] % Seitenumbruch in langen Formeln erlauben
+
     % Referenz-Namen von Tabellen und Abbildungen im Singular und Plural
-    %   sowie an Satzanfängen (\Cref{}) und mitten im Satz (\cref{}).
+    % sowie an Satzanfängen (\Cref{}) und mitten im Satz (\cref{}).
     \crefname{table}{Tab.}{Tab.}
     \Crefname{table}{Tabelle}{Tabellen}
     \crefname{figure}{Abb.}{Abb.}
     \Crefname{figure}{Abbildung}{Abbildungen}
-    
+
     % Eigene LaTeX-Befehle
-    %\newcommand{\name}[Anzahl Opt.]{Definition .. #1 #2 ..} % #i = Option bzw Angabe Nummer i
+    % \newcommand{\name}[Anzahl Opt.]{Definition .. #1 #2 ..}
+    % #i = Option bzw Angabe Nummer i
     \newcommand{\zb}{z.\,B.\ }
     \newcommand{\ua}{u.\,a.\ }
     \newcommand{\dasheist}{d.\,h.\ }
     \newcommand{\uvm}{u.\,v.\,m.\ }
-    
+
     % Eigene LaTeX-Umgebungen
-    %\newenvironment{UMGEBUNGSNAME}[ANZAHL][OPTIONAL]{BEGIN}{END}
-    
+    % \newenvironment{UMGEBUNGSNAME}[ANZAHL][OPTIONAL]{BEGIN}{END}
+
     % Silbentrennung von dem Babel-Paket unbekannten Wörtern
-    %   Bitte Manuell mit allen möglichen Silbentrennungen (-) angeben
+    % Bitte Manuell mit allen möglichen Silbentrennungen (-) angeben
     \hyphenation{%
         Grenz-fall
     }
@@ -190,49 +204,63 @@ twoside, fleqn,
 % Einbindung der Titelbefehle
 \include{title}
 
-%---------------------------------------------------------------------
+%--------------------
 \begin{document}
 
-\maketitle[intertext={im Rahmen des \\ Nanotechnologie-Forschungspraktikums}]
+%% Einbinden der Titelseite
+\maketitle[]
 
-%---------------------------------------------------------------------
+%--------------------
 %% Präambel
+
 % Zusammenfassung
 \include{A_Abstract.tex}
 \cleardoublepage
+
 % Danksagung
 \include{B_Danksagung.tex}
 \cleardoublepage
+
 % Eidesstattliche Erklärung
 \include{C_Erklaerung.tex}
 \cleardoublepage
-%---------------------------------------------------------------------
+
+%--------------------
 %% Verzeichnisse
+
 \tableofcontents
 \cleardoublepage
+
 %\listoffigures
 %\cleardoublepage
+
 %\listoftables
 %\cleardoublepage
-% Niemals das letzte \cleardoublepage vor Einleitungsbeginn vergessen!
-%---------------------------------------------------------------------
 
+% Niemals das letzte \cleardoublepage vor Einleitungsbeginn vergessen!
+
+%--------------------
 %% Hier beginnt das eigentliche Dokument:
-%   Bei Umbenennung eines Abschnittes dies unbedingt hier mit berücksichtigen!
+% Bei Umbenennung eines Abschnittes (Datei) ->
+% unbedingt auch die Inputdefinition anpassen!
 
 \input{01_Einleitung}
 
 \input{02_Vorbetrachtungen}
 
-\input{03_Schichtherstellung}
+\input{03_Herstellung}
 
-\input{04_Charakterisierung.tex}
+\input{04_Charakterisierung}
 
 \input{05_Zusammenfassung}
 
+%--------------------
+%% Beginn Anhang
 \appendix
-\input{Z_Anhang.tex}
+\input{D_Anhang}
 
+%--------------------
+%% Literaturverzeichnis
 \postappendix
 \emergencystretch=1em
 \printbibliography[heading=bibintoc]
