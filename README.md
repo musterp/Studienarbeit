@@ -2,7 +2,7 @@
 LaTeX-Template für Studien- und Diplomarbeiten an der TU Freiberg, basierend auf der TUBAFarbeiten-Klasse von Thomas Benkert.
 
 ## Einrichtung
-Die TUBAFarbeiten-Klasse ist nicht bestandteil dieses Repos. Die Klasse muss entweder bereits installiert sein, im texmf-local liegen oder in den lokalen Ordner des Repositoriums (in welchem die Arbeit später kompiliert werden soll) eingefügt werden. Nachfolgend werden die einzelnen Möglichkeiten kurz beschrieben. Das TUBAF-LaTeX Paket ist unter https://tu-freiberg.de/presse/latex verfügbar, wenn eine uniseitige Internetverbindung (Intern, VPN) zur Verfügung steht.
+Die TUBAFarbeiten-Klasse ist nicht bestandteil dieses Repos. Die Klasse muss entweder bereits installiert sein, im texmf-local liegen oder in den lokalen Ordner des Repositoriums (in welchem die Arbeit später kompiliert werden soll) eingefügt werden. Nachfolgend werden die einzelnen Möglichkeiten kurz beschrieben. Das TUBAF-LaTeX Paket ist unter https://tu-freiberg.de/presse/latex/download verfügbar, wenn eine uniseitige Internetverbindung (Intern, VPN) zur Verfügung steht.
 
 ### Kompilieren mit im lokalen Ordner liegenden Paketbestandteilen
 Im lokalen Ordner müssen die folgenden Dateien des TUBAFLaTeX Pakets abgelegt werden:
