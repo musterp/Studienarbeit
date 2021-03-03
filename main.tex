@@ -17,7 +17,7 @@
 
 %% Beginn Präambel, Klassendefinition, Paketverwaltung
 \documentclass[%
-    doktyp       = darbeit,
+    doktyp       = parbeit,
     fontsize     = 11pt,
     kapitel      = true,
     nummern      = abschnitt,
@@ -26,12 +26,10 @@
     sprache      = ngerman,
     betreuerform = liste,
     farbschema   = rgb,
-    twoside,
     fleqn,
 ]{TUBAFarbeiten}
 
 % visualizing overfull rules
-% turn off if don't needed
 \overfullrule=1em
 
 % extra KOMA scrip options
@@ -51,15 +49,12 @@
 \usepackage[english,ngerman]{babel}
 \usepackage{listings}
 
-% LUATEX Zeichenkodierung etc.
-%\usepackage{fontspec}
-%\usepackage{luacode}
-
 % Blindtext
 \usepackage{blindtext}
 
-% ToDo - Notizen
+% Notizenrandspalte
 \setlength{\marginparwidth}{2cm}
+% ToDo - Notizen
 \usepackage{todonotes}
 
 % Farben und Farb-Definitionen
@@ -173,7 +168,11 @@
     % Kommandos, Anpassungen
     \initPraeambel
 
-    \allowdisplaybreaks[1] % Seitenumbruch in langen Formeln erlauben
+    % Ändert die TOC Nummerierungsbreite
+    \renewcommand{\@pnumwidth}{2em}% 1.55em
+
+    % Seitenumbruch in langen Formeln erlauben
+    \allowdisplaybreaks[1]
 
     % Referenz-Namen von Tabellen und Abbildungen im Singular und Plural
     % sowie an Satzanfängen (\Cref{}) und mitten im Satz (\cref{}).
@@ -190,11 +189,7 @@
     \newcommand{\dasheist}{d.\,h.\ }
     \newcommand{\uvm}{u.\,v.\,m.\ }
 
-    % Eigene LaTeX-Umgebungen
-    % \newenvironment{UMGEBUNGSNAME}[ANZAHL][OPTIONAL]{BEGIN}{END}
-
-    % Silbentrennung von dem Babel-Paket unbekannten Wörtern
-    % Bitte Manuell mit allen möglichen Silbentrennungen (-) angeben
+    % Silbentrennung unbekannter Wörter
     \hyphenation{%
         Grenz-fall
     }
@@ -263,7 +258,7 @@
 %% Literaturverzeichnis
 \postappendix
 \emergencystretch=1em
-\nocite{Dimitrakopoulos.2002,Brotherton.2013,Auth.2012}
+\nocite{*}
 \printbibliography[heading=bibintoc]
 
 \end{document}
