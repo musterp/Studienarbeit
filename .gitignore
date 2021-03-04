@@ -17,7 +17,9 @@
 *.xdv
 *-converted-to.*
 *.DS_Store
+
 main.pdf
+
 # these rules might exclude image files for figures etc.
 # *.ps
 # *.eps
@@ -242,3 +244,6 @@ TSWLatexianTemp*
 
 # generated if using elsarticle.cls
 *.spl
+
+# vscode
+.vscode

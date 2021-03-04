@@ -1,0 +1,534 @@
+% Befehle und Umgebungen für TUBAF-LaTeX
+% copyright 2013-2019 by Thomas Benkert
+% http://latex.tu-freiberg.de
+% latex at tu bindestrich freiberg punkt de
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Dieses Werk ist unter einem Creative Commons 
+% Namensnennung - Keine Bearbeitung 3.0 Deutschland Lizenzvertrag lizenziert. 
+% Um die Lizenz anzusehen, gehen Sie bitte zu http://creativecommons.org/licenses/by-nd/3.0/de/ 
+% oder schicken Sie einen Brief an 
+% Creative Commons, 171 Second Street, Suite 300, San Francisco, California 94105, USA.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\NeedsTeXFormat{LaTeX2e}
+%
+\newcommand{\TUBAFbausteinebefehle@name}{TUBAFbausteinebefehle}
+\newcommand{\TUBAFbausteinebefehle@date}{2019/04/01}
+\newcommand{\TUBAFbausteinebefehle@version}{2.5.1}
+%
+\ProvidesPackage{\TUBAFbausteinebefehle@name}[\TUBAFbausteinebefehle@date\space  v.\TUBAFbausteinebefehle@version\space Thomas Benkert\space TUBAF-CD: Befehle und Umgebungen]
+%
+\typeout{Package \TUBAFbausteinebefehle@name
+	\space\TUBAFbausteinebefehle@date\space  v.\TUBAFbausteinebefehle@version\space Thomas Benkert^^J
+	\@spaces\@spaces\@spaces\@spaces\@spaces\@spaces\@spaces\space TUBAF-LaTeX: Corporate Design 2013^^J
+	\@spaces\@spaces\@spaces\@spaces\@spaces\@spaces\@spaces\space Befehle und Umgebungen fuer alle^^J
+	\@spaces\@spaces\@spaces\@spaces\@spaces\@spaces\@spaces\space TUBAF-LaTeX-Klassen und -Pakete^^J
+	\@spaces\@spaces\@spaces\@spaces\@spaces\@spaces\@spaces\space TU Bergakademie Freiberg}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% benötigte Pakete
+\RequirePackage{xkeyval}
+\RequirePackage{ifthen}
+\RequirePackage{ifluatex}
+\RequirePackage{ifxetex}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Optionen alles Anfang
+%
+\DeclareOptionX*{\PackageWarningNoLine{\TUBAFbausteinebefehle@name}{Die unbekannte Option '\CurrentOption' wird ignoriert}}
+%
+%\ExecuteOptionsX{%
+%}
+%
+\ProcessOptionsX\relax
+%
+% Optionen alles Ende
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Hilfsmakros definieren Anfang
+%
+% Hilfslänge definieren
+\newlength{\TUBAFtmpdima}
+\newlength{\TUBAFtmpdimb}
+\newlength{\TUBAFtmpdimc}
+%
+% Hilfgrößen definieren
+\providecommand{\TUBAFtmpa}{}
+\providecommand{\TUBAFtmpb}{}
+\providecommand{\TUBAFtmpc}{}
+%
+% Hilfszähler definieren
+\newcounter{TUBAFtmpcnta}
+\newcounter{TUBAFtmpcntb}
+\newcounter{TUBAFtmpcntc}
+%
+% Hilfsmakros definieren Ende
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Befehle für Optionsübergaben Anfang
+%
+\newcommand{\TUBAF@parskip}{}
+\newcommand{\TUBAF@fontsize}{}
+\newcommand{\TUBAF@draft}{true}
+\newcommand{\TUBAF@twoside}{}
+%
+\newcommand{\TUBAF@farbenfarbschema}{rgb}
+\newcommand{\TUBAF@farbenfarbtafel}{k}
+%
+\newcommand{\TUBAF@bausteinetextpos}{true}
+\newcommand{\TUBAF@bausteinetextposwert}{1}
+\newcommand{\TUBAF@bausteinetextposeinheit}{mm}
+\newcommand{\TUBAF@bausteinebausteineeinheit}{mm}
+\newcommand{\TUBAF@bausteinedvipdfm}{false}
+%
+\newcommand{\TUBAF@sprache}{}
+\newcommand{\TUBAF@addgreek}{}
+\newboolean{TUBAF@german}\setboolean{TUBAF@german}{true}%
+\newcommand{\TUBAF@titelseite}{}
+\newcommand{\TUBAF@stil}{}
+\newcommand{\TUBAF@wbm}{}
+\newcommand{\TUBAF@hausschrift}{}
+\newboolean{TUBAF@hausschrift}\setboolean{TUBAF@hausschrift}{false}%
+\newcommand{\TUBAF@tikz}{}
+%
+\newcommand{\TUBAFwbmtracht}{einfach}
+\newcommand{\TUBAFlogotracht}{einfach}
+%
+\newcommand{\TUBAF@seitenzaehler}{}
+\newcommand{\TUBAF@intertext}{}
+% Befehle für Optionsübergaben Ende
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% zur Übergabe von Helligkeitsabstufunge für Optionen und Farbwertkorrekturen
+%
+\providecommand{\TUBAFhelligkeit}{}
+\providecommand{\TUBAFhelligkeitgrau}{}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Name der Bergakademie
+\def\TUBAFBergakademiename{Technische Universit\"at Bergakademie Freiberg}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Name der Fakultaet
+\def\TUBAFFakultaet{\@dblarg\TUBAF@Fakultaet}
+\long\def\TUBAF@Fakultaet[#1]#2{%
+  \def\TUBAFtmpa{#2}%
+  \ifx\TUBAFtmpa\@empty
+    \def\insertTUBAFFakultaet{}
+  \else
+    \def\insertTUBAFFakultaet{#2}%
+  \fi
+ \def\insertshortTUBAFFakultaet{#1}}
+%\def\TUBAFFakultaet#1{\def\insertTUBAFFakultaet{#1}}
+	%\def\insertTUBAFFakultaet{}
+\TUBAFFakultaet{}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Name des Institutes
+\def\TUBAFInstitut{\@dblarg\TUBAF@Institut}
+\long\def\TUBAF@Institut[#1]#2{%
+  \def\TUBAFtmpa{#2}%
+  \ifx\TUBAFtmpa\@empty
+    \def\insertTUBAFInstitut{}
+  \else
+    \def\insertTUBAFInstitut{#2}%
+  \fi
+ \def\insertshortTUBAFInstitut{#1}}
+%\def\TUBAFInstitut#1{\def\insertTUBAFInstitut{#1}}
+	%\def\insertTUBAFInstitut{}
+\TUBAFInstitut{}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Name des Lehrstuhls
+\def\TUBAFLehrstuhl{\@dblarg\TUBAF@Lehrstuhl}
+\long\def\TUBAF@Lehrstuhl[#1]#2{%
+  \def\TUBAFtmpa{#2}%
+  \ifx\TUBAFtmpa\@empty
+    \def\insertTUBAFLehrstuhl{}
+  \else
+    \def\insertTUBAFLehrstuhl{#2}%
+  \fi
+ \def\insertshortTUBAFLehrstuhl{#1}}
+%\def\TUBAFLehrstuhl#1{\def\insertTUBAFLehrstuhl{#1}}
+	%\def\insertTUBAFLehrstuhl{}
+\TUBAFLehrstuhl{}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Titel
+\def\TUBAFTitel{\@dblarg\TUBAF@Titel}
+\long\def\TUBAF@Titel[#1]#2{%
+  \def\TUBAFtmpa{#2}%
+  \ifx\TUBAFtmpa\@empty%
+    \def\insertTUBAFTitel{}%
+  \else%
+    \def\insertTUBAFTitel{#2}%
+  \fi%
+ \def\insertshortTUBAFTitel{#1}}
+\TUBAFTitel{}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Untertitels
+%
+\def\TUBAFUntertitel{\@dblarg\TUBAF@Untertitel}
+\long\def\TUBAF@Untertitel[#1]#2{%
+  \def\TUBAFtmpa{#2}%
+  \ifx\TUBAFtmpa\@empty
+    \def\insertTUBAFUntertitel{}%
+  \else
+    \def\insertTUBAFUntertitel{#2}%
+  \fi
+ \def\insertshortTUBAFUntertitel{#1}}%
+\TUBAFUntertitel{}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Autor
+\def\TUBAFAutor{\@dblarg\TUBAF@Autor}
+\long\def\TUBAF@Autor[#1]#2{%
+  \def\TUBAFtmpa{#2}%
+  \ifx\TUBAFtmpa\@empty
+    \def\insertTUBAFAutor{}
+  \else
+    \def\insertTUBAFAutor{#2}%
+  \fi
+ \def\insertshortTUBAFAutor{#1}}
+\TUBAFAutor{}
+\newcommand{\TUBAFAutorname}{Autor:}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Datum
+\def\TUBAFDatum{\@dblarg\TUBAF@Datum}
+\long\def\TUBAF@Datum[#1]#2{%
+  \def\TUBAFtmpa{#2}%
+  \ifx\TUBAFtmpa\@empty
+    \def\insertTUBAFDatum{}
+  \else
+    \def\insertTUBAFDatum{#2}%
+  \fi
+ \def\insertshortTUBAFDatum{#1}}
+\TUBAFDatum{}
+\newcommand{\TUBAFDatumname}{Datum:}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Studiengang
+\def\TUBAFStudiengang{\@dblarg\TUBAF@Studiengang}
+\long\def\TUBAF@Studiengang[#1]#2{%
+  \def\TUBAF@tmpa{#2}%
+  \ifx\TUBAF@tmpa\@empty
+    \def\insertTUBAFStudiengang{}
+  \else
+    \def\insertTUBAFStudiengang{#2}%
+  \fi
+ \def\insertshortTUBAFStudiengang{#1}}
+\TUBAFStudiengang{}
+\newcommand{\TUBAFStudiengangname}{Studiengang:}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Vertiefung
+\def\TUBAFVertiefung{\@dblarg\TUBAFprotokoll@Vertiefung}
+\long\def\TUBAFprotokoll@Vertiefung[#1]#2{%
+  \def\TUBAF@tmpa{#2}%
+  \ifx\TUBAF@tmpa\@empty
+    \def\insertTUBAFVertiefung{}
+  \else
+    \def\insertTUBAFVertiefung{#2}%
+  \fi
+ \def\insertshortTUBAFVertiefung{#1}}
+\TUBAFVertiefung{}
+\newcommand{\TUBAFVertiefungname}{Vertiefung:}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Matrikel
+\def\TUBAFMatrikel#1{\def\insertTUBAFMatrikel{#1}}
+\TUBAFMatrikel{}
+\newcommand{\TUBAFMatrikelname}{Matrikel:}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% neue Befehle: Betreuer
+\def\TUBAFBetreuer{\@dblarg\TUBAF@Betreuer}
+\long\def\TUBAF@Betreuer[#1]#2{%
+  \def\TUBAFtmpa{#2}%
+  \ifx\TUBAFtmpa\@empty
+    \def\insertTUBAFBetreuer{}
+  \else
+    \def\insertTUBAFBetreuer{#2}%
+  \fi
+ \def\insertshortTUBAFBetreuer{#1}}
+\TUBAFBetreuer{}
+\newcommand{\TUBAFBetreuername}{Betreuer:}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% neue Befehle: Unterschrift als Grafik
+\newcommand{\TUBAFUnterschriftAlsGrafik}[2][1]{%
+	\def\insertTUBAFUnterschriftAlsGrafik{\includegraphics[scale=#1]{#2}}
+}
+\def\insertTUBAFUnterschriftAlsGrafik{}
+%\TUBAFUnterschriftAlsGrafik{}% nicht leer setzen, sonst schalgen Tests auf leer fehl
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% neue Befehle: ein zweites Logo
+%\newcommand{\TUBAFZweitlogo}[1]{\def\TUBAFZweitlogonotscaled{#1}}
+%\def\TUBAFZweitlogonotscaled{}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% neue Befehle: ein zweites Logo
+\def\TUBAFZweitlogo{\@dblarg\TUBAF@Zweitlogo}
+\long\def\TUBAF@Zweitlogo[#1]#2{%
+	\def\TUBAFtmpa{#2}%
+	\ifx\TUBAFtmpa\@empty
+		\def\TUBAFZweitlogonotscaled{}
+	   \else
+		\def\TUBAFZweitlogonotscaled{#2}%
+	\fi
+	\def\TUBAFZweitlogoTSnotscaled{#1}%
+}
+\TUBAFZweitlogo{}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% neue Befehle: ein Logo für externe Firmen/Institutionen
+\def\TUBAFExternlogo{\@dblarg\TUBAF@Externlogo}
+\long\def\TUBAF@Externlogo[#1]#2{%
+	\def\TUBAFtmpa{#2}%
+	\ifx\TUBAFtmpa\@empty
+		\def\TUBAFExternlogonotscaled{}
+	   \else
+		\def\TUBAFExternlogonotscaled{#2}%
+	\fi
+	\def\TUBAFExternlogoTSnotscaled{#1}%
+}
+\TUBAFExternlogo{}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% neue Befehle: ein Rahmen
+% aus beamerthemeTUBAF.sty
+% TUBAFumrandung anstatt des frame-Befehls; arbeitet in allen Modi Anfang
+%
+\long\def\TUBAFUmrandung#1{%
+  \leavevmode%
+  \hbox{%
+    \hskip-\@wholewidth%
+    \vbox{%
+      \vskip-\@wholewidth%
+      \hrule \@height\@wholewidth%
+      \hbox{%
+        \vrule\@width\@wholewidth%
+        #1%
+        \vrule\@width\@wholewidth}%
+      \hrule\@height\@wholewidth%
+      \vskip-\@wholewidth}%
+    \hskip-\@wholewidth}}
+% wegen der Konsistenz
+\newcommand{\TUBAFumrandung}[1]{%
+	\@warning{Der Befehl 'TUBAFumrandung'\MessageBreak ist veraltet und kann in Zukunft geloescht sein.\MessageBreak Nutzen Sie bitte stattdessen 'TUBAFUmrandung'}%
+	\TUBAFUmrandung{#1}%
+}
+%
+% neue Befehle: ein unsichtbarer Rahmen
+% zur besseren Ausrichtung und für weniger Probleme bei Verwendung von TUBAFumrandung
+\newcommand{\TUBAFBox}[1]{\leavevmode\hbox{\vbox{\hbox{\vrule\@width0pt#1}\hrule\@height0pt}}}
+\newcommand{\TUBAFbox}[1]{%
+	\@warning{Der Befehl 'TUBAFbox'\MessageBreak ist veraltet und kann in Zukunft geloescht sein.\MessageBreak Nutzen Sie bitte stattdessen 'TUBAFBox'}%
+	\TUBAFBox{#1}%
+}
+%
+% allg. Einst.:  TUBAFumrandung anstatt des frame-Befehls; arbeitet in allen Modi Ende
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Sprachanpassungen
+% \TUBAFSprachanpassung[Class/Package]{<Name ohne TUBAF>}
+%
+\newcommand{\TUBAFSprachanpassung}[2][Class]{%
+	\ifthenelse{\equal{\TUBAF@sprache}{nobabel}}{%
+		\AtBeginDocument{\@ifpackageloaded{babel}{\input{TUBAF#2.ldf}}{}}%
+	   }{%
+		\ifthenelse{\equal{\TUBAF@sprache}{ngerman}\OR\equal{\TUBAF@sprache}{german}}{%
+			\RequirePackage[\TUBAF@addgreek english,\TUBAF@sprache]{babel}%
+		   }{%
+			\ifthenelse{\equal{\TUBAF@sprache}{english}\OR\equal{\TUBAF@sprache}{american}}{%
+				\RequirePackage[\TUBAF@addgreek ngerman,\TUBAF@sprache]{babel}%
+			   }{%
+				\RequirePackage[\TUBAF@addgreek english,ngerman,\TUBAF@sprache]{babel}%
+			}
+		}%
+		%
+		\input{TUBAF#2.ldf}
+		\PassOptionsToPackage{\TUBAF@sprache}{translator}% für siunitx u.a.
+	}%
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Schriftentest Anfang
+% \TUBAFSchriftanpassung[Class/Package]{<Name ohne TUBAF>}{cmss/cmr}
+\newcommand{\TUBAFSchriftanpassung}[3][Class]{%
+	\ifluatex
+		\csname#1WarningNoLine\endcsname{\csname TUBAF#2@name\endcsname}{Kuemmern Sie sich bitte selbst\MessageBreak um die Fontangelegenheiten}%
+	   \else
+		\ifxetex
+			\csname#1WarningNoLine\endcsname{\csname TUBAF#2@name\endcsname}{Kuemmern Sie sich bitte selbst\MessageBreak um die Fontangelegenheiten}%
+		   \else
+			\ifthenelse{\equal{\TUBAF@hausschrift}{wasanners}}{}{%
+				\ifthenelse{\equal{\TUBAF@hausschrift}{arial}}{%
+					\IfFileExists{uarial.sty}{%
+						\RequirePackage[scaled]{uarial}
+						\renewcommand{\familydefault}{\sfdefault}
+						\ifthenelse{\isundefined{\@pnumwidth}}{}{\renewcommand\@pnumwidth{1.85em}}% Breite für Seitenzahlen im toc
+					   }{%
+						\csname#1WarningNoLine\endcsname{\csname TUBAF#2@name\endcsname}{Kein Arial (Paket uarial) gefunden.\MessageBreak Gehe zur Grundeinstellung zurueck}
+					}%
+				   }{%
+					\ifthenelse{\equal{\TUBAF@hausschrift}{times}}{%
+						\IfFileExists{mathptmx.sty}{%
+							\RequirePackage{mathptmx}
+						   }{%
+							\csname#1WarningNoLine\endcsname{\csname TUBAF#2@name\endcsname}{Kein Times (Paket mathptmx) gefunden.\MessageBreak Gehe zur Grundeinstellung zurueck}
+						}
+					   }{%
+						\ifthenelse{\equal{\TUBAF@hausschrift}{false}}{%
+							\ifthenelse{\equal{#3}{}}{}{\renewcommand{\familydefault}{#3}}%
+						   }{%
+							\RequirePackage[staerke=\TUBAF@hausschrift]{TUBAFhausschrift}
+							\ifthenelse{\isundefined{\@pnumwidth}}{}{\renewcommand\@pnumwidth{1.85em}}% Breite für Seitenzahlen im toc
+						}%
+					}%
+				}%
+			}%
+		\fi%
+	\fi%
+}
+% Schriftentest Ende
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Schriftanpassungen für KOMA
+\newcommand{\TUBAFSchriftanpassungenKoma}{%
+	\ifthenelse{\equal{\TUBAF@hausschrift}{times}}{%
+		\setkomafont{captionlabel}{\footnotesize\bfseries}	% Abbildungs- u. Tabellentitellabel
+		\setkomafont{caption}{\footnotesize}			% Abbildungs- u. Tabellentitel
+		\setcapindent{0pt}						% Einzug Abbildungs- u. Tabellentitel
+		\setkomafont{pageheadfoot}{\normalfont\footnotesize}	% Kopf-/Fußzeile
+		\setkomafont{pagenumber}{\normalfont\footnotesize}	% Seitenzahl
+		\addtokomafont{sectioning}{\rmfamily}			% alle Überschriften
+		\addtokomafont{descriptionlabel}{\rmfamily}		% 
+	   }{%
+		\setkomafont{captionlabel}{\footnotesize\sffamily\bfseries}		% Abbildungs- u. Tabellentitellabel
+		\setkomafont{caption}{\footnotesize}					% Abbildungs- u. Tabellentitel
+		\setcapindent{0pt}								% Einzug Abbildungs- u. Tabellentitel
+		\setkomafont{pageheadfoot}{\normalfont\footnotesize\sffamily}	% Kopf-/Fußzeile
+		\setkomafont{pagenumber}{\normalfont\footnotesize\sffamily}		% Seitenzahl
+	}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Seitenstile: Liniendicke definieren
+\newcommand{\TUBAFliniendicke}{}
+%
+\AtBeginDocument{%sonst keine Linie bei hausschrift
+	\ifthenelse{\isundefined{\TUBAFhausschrift@strichstaerke}}{%
+		\renewcommand{\TUBAFliniendicke}{0.08ex}%
+	   }{%
+		\renewcommand{\TUBAFliniendicke}{.66\TUBAFhausschrift@strichstaerke}%
+	}%
+}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% isinteger/isnumber aus ifthenx.sty
+% wird hier eingebaut, da es sonst zu einem Fehler von biblatex wegen ifthenx kommt
+%
+%----------------------------------------------------------------------------
+% \ifthenelse{<numtest>{...}}{<true part>}{<false part>}, where <numtest> is:
+%   \ispositiveinteger    (string of one or more digits)
+%   \isinteger            (ditto, with optional leading minus sign)
+%   \isrealnumber         (ditto, with optional decimal point)
+%   \ispositiverealnumber (ditto, with no leading minus sign)
+%
+% NB, 0, 0.0, etc consigned positive, -0, -0.0, etc negative by these tests.
+%----------------------------------------------------------------------------
+\def\itx@gobbleleadingminus#1{\if-#1\else#1\fi}
+
+\def\itx@gobblefirstdecimalpoint#1{%
+  \expandafter\itx@@gobblefirstdecimalpoint%
+  \romannumeral-`X#1\@empty.\@empty\relax}
+
+\def\itx@@gobblefirstdecimalpoint#1.#2\@empty#3\relax{#1#2}
+
+\def\itx@ispositiveinteger#1#2{%
+  \TE@throw\noexpand\in@{!}{#1}%
+  \noexpand\itx@@ispositiveinteger#1\noexpand\@nil%
+  \noexpand\if!\@tempa#2}
+
+\def\itx@@ispositiveinteger#1\@nil{%
+  \def\@tempa{\ifin@?\else\ifnum9<1#1!\else?\fi\fi}}
+
+\def\itx@isinteger#1#2{%
+  \TE@throw\noexpand\in@{!}{#1}%
+  \noexpand\itx@@isinteger#1\noexpand\@nil%
+  \noexpand\if!\@tempa#2}
+
+\def\itx@@isinteger#1\@nil{%
+  \expandafter\itx@@ispositiveinteger%
+    \expandafter{\expandafter\itx@gobbleleadingminus#1}\@nil}
+
+\def\itx@ispositiverealnumber#1#2{%
+  \TE@throw\noexpand\in@{!}{#1}%
+  \noexpand\itx@@ispositiverealnumber#1\noexpand\@nil%
+  \noexpand\if!\@tempa#2}
+
+\def\itx@@ispositiverealnumber#1\@nil{%
+  \expandafter\itx@@ispositiveinteger%
+    \expandafter{\expandafter\itx@gobblefirstdecimalpoint%
+      \expandafter{#1}}\@nil}
+
+\def\itx@isrealnumber#1#2{%
+  \TE@throw\noexpand\in@{!}{#1}%
+  \noexpand\itx@@isrealnumber#1\noexpand\@nil%
+  \noexpand\if!\@tempa#2}
+
+\def\itx@@isrealnumber#1\@nil{%
+  \expandafter\itx@@ispositiveinteger%
+    \expandafter{\expandafter\itx@gobblefirstdecimalpoint%
+      \expandafter{\expandafter\itx@gobbleleadingminus%
+        \expandafter{#1}}}\@nil}
+%
+\let\isinteger\itx@isinteger
+\let\ispositiveinteger\itx@ispositiveinteger
+\let\isrealnumber\itx@isrealnumber%   <-- synonyms (a)
+\let\isnumber\itx@isrealnumber%       <-- synonyms (a)
+\let\ispositiverealnumber\itx@ispositiverealnumber%   <-- synonyms (b)
+\let\ispositivenumber\itx@ispositiverealnumber%       <-- synonyms (b)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\endinput
