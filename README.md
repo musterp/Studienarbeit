@@ -1,6 +1,10 @@
 # TUBAF Vorlage für wissenschaftliche Arbeiten
 
-LaTeX-Template für Studien- und Diplomarbeiten an der TU Freiberg, basierend auf der TUBAFarbeiten-Klasse von Thomas Benkert (c) 2008 - 2019.
+LaTeX-Template für Studien- und Diplomarbeiten an der TU Freiberg, basierend auf der TUBAFarbeiten-Klasse von Thomas Benkert (c) 2008 - 2019 (CC-by-nd 3.0).
+
+> Um die Lizenz der TUBAFpakete anzusehen, gehen Sie bitte zu http://creativecommons.org/licenses/by-nd/3.0/de/ oder schicken Sie einen Brief an  Creative Commons, 171 Second Street, Suite 300, San Francisco, California 94105, USA.
+
+Die restlichen Module abseits des unbearbeiteten TUBAFarbeiten-Paketes stehen unter MIT-Lizenz.
 
 ## Einrichtung
 
